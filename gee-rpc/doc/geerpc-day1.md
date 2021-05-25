@@ -56,7 +56,7 @@ type Header struct {
 - Error 是错误信息，客户端置为空，服务端如果如果发生错误，将错误信息置于 Error 中。
 
 
-我们将和消息编解码相关的代码都放到 codec 子目录中，在此之前，还需要在根目录下使用 `go mod init geerpc` 初始化项目，方便后续子 package 之间的引用。
+我们将和消息编解码相关的代码都防到 codec 子目录中，在此之前，还需要在根目录下使用 `go mod init geerpc` 初始化项目，方便后续子 package 之间的引用。
 
 进一步，抽象出对消息体进行编解码的接口 Codec，抽象出接口是为了实现不同的 Codec 实例：
 
@@ -183,7 +183,7 @@ var DefaultOption = &Option{
 }
 ```
 
-一般来说，涉及协议协商的这部分信息，需要设计固定的字节来传输的。但是为了实现上更简单，GeeRPC 客户端固定采用 JSON 编码 Option，后续的 header 和 body 的编码方式由 Option 中的 CodeType 指定，服务端首先使用 JSON 解码 Option，然后通过 Option 得 CodeType 解码剩余的内容。即报文将以这样的形式发送：
+一般来说，涉及协议协商的这部分信息，需要设计固定的字节来传输的。但是为了实现上更简单，GeeRPC 客户端固定采用 JSON 编码 Option，后续的 header 和 body 的编码方式由 Option 中的 CodeType 指定，服务端首先使用 JSON 解码 Option，然后通过 Option 的 CodeType 解码剩余的内容。即报文将以这样的形式发送：
 
 ```bash
 | Option{MagicNumber: xxx, CodecType: xxx} | Header{ServiceMethod ...} | Body interface{} |
